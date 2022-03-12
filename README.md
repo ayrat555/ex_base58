@@ -2,7 +2,7 @@
 
 Rust NIF for Base58 encoding and decoding.
 
-It uses https://github.com/debris/base58 rust library
+It uses https://github.com/mycorrhiza/bs58-rs rust library
 
 ## Installation
 
@@ -11,7 +11,7 @@ The package can be installed by adding `ex_base58` to your list of dependencies 
 ```elixir
 def deps do
   [
-    {:ex_base58, "~> 0.1.0"}
+    {:ex_base58, "~> 0.2.0"}
   ]
 end
 ```
