@@ -1,6 +1,6 @@
 # ExBase58
 
-Rust NIF for Base58 encoding and decoding.
+Rust NIF for Base58 encoding and decoding with support of Bitcoin, Ripple, Monero and Flickr alphabets.
 
 It uses https://github.com/mycorrhiza/bs58-rs rust library
 
@@ -11,7 +11,7 @@ The package can be installed by adding `ex_base58` to your list of dependencies 
 ```elixir
 def deps do
   [
-    {:ex_base58, "~> 0.2.0"}
+    {:ex_base58, "~> 0.3.0"}
   ]
 end
 ```

@@ -14,31 +14,70 @@ mod atoms {
     }
 }
 
-#[rustler::nif]
-fn encode<'a>(env: Env<'a>, binary: Binary, alphabet: String) -> Term<'a> {
-    do_encode(env, binary, Some(alphabet), None)
+enum Encoding {
+    WithoutCheck,
+    WithCheck,
+    WithVersionCheck,
 }
 
 #[rustler::nif]
-fn encode_check<'a>(env: Env<'a>, binary: Binary, alphabet: String, version: u8) -> Term<'a> {
-    do_encode(env, binary, Some(alphabet), Some(version))
+fn encode<'a>(env: Env<'a>, binary: Binary, alphabet: String) -> Term<'a> {
+    do_encode(env, binary, alphabet, None, Encoding::WithoutCheck)
+}
+
+#[rustler::nif]
+fn encode_check_version<'a>(
+    env: Env<'a>,
+    binary: Binary,
+    alphabet: String,
+    version: u8,
+) -> Term<'a> {
+    do_encode(
+        env,
+        binary,
+        alphabet,
+        Some(version),
+        Encoding::WithVersionCheck,
+    )
+}
+
+#[rustler::nif]
+fn encode_check<'a>(env: Env<'a>, binary: Binary, alphabet: String) -> Term<'a> {
+    do_encode(env, binary, alphabet, None, Encoding::WithCheck)
 }
 
 #[rustler::nif]
 fn decode<'a>(env: Env<'a>, binary: String, alphabet: String) -> Term<'a> {
-    do_decode(env, binary, Some(alphabet), None)
+    do_decode(env, binary, alphabet, None, Encoding::WithoutCheck)
 }
 
 #[rustler::nif]
-fn decode_check<'a>(env: Env<'a>, binary: String, alphabet: String, version: u8) -> Term<'a> {
-    do_decode(env, binary, Some(alphabet), Some(version))
+fn decode_check_version<'a>(
+    env: Env<'a>,
+    binary: String,
+    alphabet: String,
+    version: u8,
+) -> Term<'a> {
+    do_decode(
+        env,
+        binary,
+        alphabet,
+        Some(version),
+        Encoding::WithVersionCheck,
+    )
+}
+
+#[rustler::nif]
+fn decode_check<'a>(env: Env<'a>, binary: String, alphabet: String) -> Term<'a> {
+    do_decode(env, binary, alphabet, None, Encoding::WithCheck)
 }
 
 fn do_decode<'a>(
     env: Env<'a>,
     binary: String,
-    alphabet_option: Option<String>,
+    alphabet_option: String,
     version_option: Option<u8>,
+    encoding: Encoding,
 ) -> Term<'a> {
     let builder = bs58::decode(binary);
 
@@ -47,9 +86,11 @@ fn do_decode<'a>(
         Err(error) => return error,
     };
 
-    let builder = match version_option {
-        None => builder.with_alphabet(&alphabet),
-        Some(_version) => builder.with_alphabet(&alphabet).with_check(version_option),
+    let builder = match encoding {
+        Encoding::WithoutCheck => builder.with_alphabet(&alphabet),
+        Encoding::WithVersionCheck | Encoding::WithCheck => {
+            builder.with_alphabet(&alphabet).with_check(version_option)
+        }
     };
 
     let result = builder.into_vec();
@@ -63,8 +104,9 @@ fn do_decode<'a>(
 fn do_encode<'a>(
     env: Env<'a>,
     binary: Binary,
-    alphabet_option: Option<String>,
+    alphabet_option: String,
     version_option: Option<u8>,
+    encoding: Encoding,
 ) -> Term<'a> {
     let builder = bs58::encode(binary.as_slice());
 
@@ -73,9 +115,12 @@ fn do_encode<'a>(
         Err(error) => return error,
     };
 
-    let builder = match version_option {
-        Some(version) => builder.with_alphabet(&alphabet).with_check_version(version),
-        None => builder.with_alphabet(&alphabet),
+    let builder = match encoding {
+        Encoding::WithoutCheck => builder.with_alphabet(&alphabet),
+        Encoding::WithCheck => builder.with_alphabet(&alphabet).with_check(),
+        Encoding::WithVersionCheck => builder
+            .with_alphabet(&alphabet)
+            .with_check_version(version_option.unwrap()),
     };
 
     let result = builder.into_string();
@@ -83,12 +128,8 @@ fn do_encode<'a>(
     encode_result(env, result.as_bytes())
 }
 
-fn parse_alphabet<'a>(env: Env<'a>, alphabet: Option<String>) -> Result<Alphabet, Term<'a>> {
-    if let None = alphabet {
-        return Ok(*Alphabet::BITCOIN);
-    }
-
-    match alphabet.unwrap().as_str() {
+fn parse_alphabet<'a>(env: Env<'a>, alphabet: String) -> Result<Alphabet, Term<'a>> {
+    match alphabet.as_str() {
         "bitcoin" => Ok(*Alphabet::BITCOIN),
         "monero" => Ok(*Alphabet::MONERO),
         "flickr" => Ok(*Alphabet::FLICKR),
@@ -106,5 +147,12 @@ fn encode_result<'a>(env: Env<'a>, bytes: &[u8]) -> Term<'a> {
 
 rustler::init!(
     "Elixir.ExBase58.Impl",
-    [encode, encode_check, decode, decode_check]
+    [
+        encode,
+        encode_check,
+        encode_check_version,
+        decode,
+        decode_check,
+        decode_check_version
+    ]
 );

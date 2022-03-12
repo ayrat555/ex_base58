@@ -42,24 +42,42 @@ defmodule ExBase58 do
   end
 
   @doc """
-  Encodes binary into Base58Check format
+  Encodes binary including checksum calculated using the Base58Check algorithm and version
 
   ## Examples
 
-      iex> ExBase58.encode_check(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 0)
+      iex> ExBase58.encode_check_version(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 0)
       {:ok, "1GZVwCXwyKVRPTViubJDVKVhVvcaEoX5cN"}
 
-      iex> ExBase58.encode_check(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 111)
+      iex> ExBase58.encode_check_version(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 111)
       {:ok, "mw5TEFcvnLvgAZyLdAGbKEi2MvDHF1HXJX"}
 
-      iex> ExBase58.encode_check(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 111, :ripple)
+      iex> ExBase58.encode_check_version(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 111, :ripple)
       {:ok, "mAnTNEcv8LvgwZyLdwGbKN5pMvDHErHXJX"}
   """
-  @spec encode_check(binary(), non_neg_integer(), alphabet()) ::
+  @spec encode_check_version(binary(), non_neg_integer(), alphabet()) ::
           {:ok, binary()} | {:error, atom()}
-  def encode_check(binary, version, alphabet \\ :bitcoin) do
+  def encode_check_version(binary, version, alphabet \\ :bitcoin) do
     with {:ok, alphabet} <- alphabet_to_string(alphabet) do
-      Impl.encode_check(binary, alphabet, version)
+      Impl.encode_check_version(binary, alphabet, version)
+    end
+  end
+
+  @doc """
+  Encodes binary including checksum calculated using the Base58Check algorithm
+
+  ## Examples
+
+      iex> ExBase58.encode_check(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, :monero)
+      {:ok, "GZVwCXwyKVRPTViubJDVKVhVvcaKpEnqR"}
+
+      iex> ExBase58.encode_check(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, :ripple)
+      {:ok, "GZVAUXAyKVRPTV5ubJDVKV6Vvc2KFN8qR"}
+  """
+  @spec encode_check(binary(), alphabet()) :: {:ok, String.t()} | {:error, atom()}
+  def encode_check(binary, alphabet \\ :bitcoin) do
+    with {:ok, alphabet} <- alphabet_to_string(alphabet) do
+      Impl.encode_check(binary, alphabet)
     end
   end
 
@@ -97,25 +115,44 @@ defmodule ExBase58 do
   end
 
   @doc """
-  Decodes from Base58Check format
+  Decodes binary checking checksum using the Base58Check algorithm. The version byte will be used in verification.
 
   ## Examples
 
-      iex> ExBase58.decode_check("1GZVwCXwyKVRPTViubJDVKVhVvcaEoX5cN", 0)
+      iex> ExBase58.decode_check_version("1GZVwCXwyKVRPTViubJDVKVhVvcaEoX5cN", 0)
       {:ok, <<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>}
 
-      iex> ExBase58.decode_check("mw5TEFcvnLvgAZyLdAGbKEi2MvDHF1HXJX", 111)
+      iex> ExBase58.decode_check_version("mw5TEFcvnLvgAZyLdAGbKEi2MvDHF1HXJX", 111)
       {:ok, <<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>}
 
-      iex> ExBase58.decode_check("mAnTNEcv8LvgwZyLdwGbKN5pMvDHErHXJX", 111, :ripple)
+      iex> ExBase58.decode_check_version("mAnTNEcv8LvgwZyLdwGbKN5pMvDHErHXJX", 111, :ripple)
       {:ok, <<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>}
   """
-  @spec decode_check(binary(), non_neg_integer(), alphabet()) ::
+  @spec decode_check_version(binary(), non_neg_integer(), alphabet()) ::
           {:ok, binary()} | {:error, atom()}
-  def decode_check(binary, version, alphabet \\ :bitcoin) do
+  def decode_check_version(binary, version, alphabet \\ :bitcoin) do
     with {:ok, alphabet} <- alphabet_to_string(alphabet),
-         {:ok, <<^version>> <> decoded} <- Impl.decode_check(binary, alphabet, version) do
+         {:ok, <<^version>> <> decoded} <-
+           Impl.decode_check_version(binary, alphabet, version) do
       {:ok, decoded}
+    end
+  end
+
+  @doc """
+  Decodes binary checking checksum using the Base58Check algorithm.
+
+  ## Examples
+
+      iex> ExBase58.decode_check("GZVwCXwyKVRPTViubJDVKVhVvcaKpEnqR", :monero)
+      {:ok, <<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>}
+
+      iex> ExBase58.decode_check("GZVAUXAyKVRPTV5ubJDVKV6Vvc2KFN8qR", :ripple)
+      {:ok, <<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>}
+  """
+  @spec decode_check(binary(), alphabet()) :: {:ok, String.t()} | {:error, atom()}
+  def decode_check(binary, alphabet \\ :bitcoin) do
+    with {:ok, alphabet} <- alphabet_to_string(alphabet) do
+      Impl.decode_check(binary, alphabet)
     end
   end
 
