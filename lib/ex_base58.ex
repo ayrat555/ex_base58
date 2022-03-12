@@ -42,7 +42,7 @@ defmodule ExBase58 do
   end
 
   @doc """
-  Encodes binary into Base58Check format
+  Encodes binary including checksum calculated using the Base58Check algorithm and version
 
   ## Examples
 
@@ -64,6 +64,7 @@ defmodule ExBase58 do
   end
 
   @doc """
+  Encodes binary including checksum calculated using the Base58Check algorithm
 
   ## Examples
 
@@ -114,7 +115,7 @@ defmodule ExBase58 do
   end
 
   @doc """
-  Decodes from Base58Check format
+  Decodes binary checking checksum using the Base58Check algorithm. The version byte will be used in verification.
 
   ## Examples
 
@@ -138,6 +139,7 @@ defmodule ExBase58 do
   end
 
   @doc """
+  Decodes binary checking checksum using the Base58Check algorithm.
 
   ## Examples
 
