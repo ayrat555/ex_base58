@@ -2,7 +2,7 @@
 
 Rust NIF for Base58 encoding and decoding.
 
-It uses https://github.com/debris/base58 rust library
+It uses https://github.com/mycorrhiza/bs58-rs rust library
 
 ## Installation
 

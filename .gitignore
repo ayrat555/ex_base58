@@ -24,3 +24,6 @@ ex_base58-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+/priv/native/*.so
+/native/exbase58/target/*
