@@ -42,6 +42,24 @@ defmodule ExBase58 do
   end
 
   @doc """
+  Same as encode/2, but returns a string value instead of a tuple and raises if the alphabet is wrong
+
+  ## Examples
+
+      iex> ExBase58.encode!("hello")
+      "Cn8eVZg"
+
+      iex> ExBase58.encode!("hello", :not_listed)
+      ** (ArgumentError) Invalid alphabet
+  """
+  @spec encode!(binary(), alphabet()) :: String.t()
+  def encode!(binary, alphabet \\ :bitcoin) do
+    str_alphabet = alphabet_to_string!(alphabet)
+    {:ok, value} = Impl.encode(binary, str_alphabet)
+    value
+  end
+
+  @doc """
   Encodes binary including checksum calculated using the Base58Check algorithm and version
 
   ## Examples
@@ -64,6 +82,24 @@ defmodule ExBase58 do
   end
 
   @doc """
+  Same as encode_check_version/3, but returns a string value instead of a tuple and raises if the alphabet is wrong
+
+  ## Examples
+
+      iex> ExBase58.encode_check_version!(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 0)
+      "1GZVwCXwyKVRPTViubJDVKVhVvcaEoX5cN"
+
+      iex> ExBase58.encode_check_version!(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, 0, :not_listed)
+      ** (ArgumentError) Invalid alphabet
+  """
+  @spec encode_check_version!(binary(), non_neg_integer(), alphabet()) :: binary()
+  def encode_check_version!(binary, version, alphabet \\ :bitcoin) do
+    str_alphabet = alphabet_to_string!(alphabet)
+    {:ok, value} = Impl.encode_check_version(binary, str_alphabet, version)
+    value
+  end
+
+  @doc """
   Encodes binary including checksum calculated using the Base58Check algorithm
 
   ## Examples
@@ -79,6 +115,24 @@ defmodule ExBase58 do
     with {:ok, alphabet} <- alphabet_to_string(alphabet) do
       Impl.encode_check(binary, alphabet)
     end
+  end
+
+  @doc """
+  Same as encode_check/2, but returns a string value instead of a tuple and raises if the alphabet is wrong
+
+  ## Examples
+
+      iex> ExBase58.encode_check!(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, :monero)
+      "GZVwCXwyKVRPTViubJDVKVhVvcaKpEnqR"
+
+      iex> ExBase58.encode_check!(<<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>, :not_listed)
+      ** (ArgumentError) Invalid alphabet
+  """
+  @spec encode_check!(binary(), alphabet()) :: String.t()
+  def encode_check!(binary, alphabet \\ :bitcoin) do
+    str_alphabet = alphabet_to_string!(alphabet)
+    {:ok, value} = Impl.encode_check(binary, str_alphabet)
+    value
   end
 
   @doc """
@@ -115,6 +169,24 @@ defmodule ExBase58 do
   end
 
   @doc """
+  Same as decode/2, but returns a string value instead of a tuple and raises if the alphabet is wrong
+
+  ## Examples
+
+      iex> ExBase58.decode!("2gsG")
+      <<5, 6, 7>>
+
+      iex> ExBase58.decode!("cM8DuyF", :not_listed)
+      ** (ArgumentError) Invalid alphabet
+  """
+  @spec decode!(String.t(), alphabet()) :: binary()
+  def decode!(encoded, alphabet \\ :bitcoin) do
+    str_alphabet = alphabet_to_string!(alphabet)
+    {:ok, value} = Impl.decode(encoded, str_alphabet)
+    value
+  end
+
+  @doc """
   Decodes binary checking checksum using the Base58Check algorithm. The version byte will be used in verification.
 
   ## Examples
@@ -139,6 +211,24 @@ defmodule ExBase58 do
   end
 
   @doc """
+  Same as decode_check_version/3, but returns a string value instead of a tuple and raises if the alphabet is wrong
+
+  ## Examples
+
+      iex> ExBase58.decode_check_version!("1GZVwCXwyKVRPTViubJDVKVhVvcaEoX5cN", 0)
+      <<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>
+
+      iex> ExBase58.decode_check_version!("1GZVwCXwyKVRPTViubJDVKVhVvcaEoX5cN", 0, :not_listed)
+      ** (ArgumentError) Invalid alphabet
+  """
+  @spec decode_check_version!(binary(), non_neg_integer(), alphabet()) :: binary()
+  def decode_check_version!(binary, version, alphabet \\ :bitcoin) do
+    str_alphabet = alphabet_to_string!(alphabet)
+    {:ok, <<^version>> <> decoded} = Impl.decode_check_version(binary, str_alphabet, version)
+    decoded
+  end
+
+  @doc """
   Decodes binary checking checksum using the Base58Check algorithm.
 
   ## Examples
@@ -156,6 +246,24 @@ defmodule ExBase58 do
     end
   end
 
+  @doc """
+  Same as decode_check/2, but returns a string value instead of a tuple and raises if the alphabet is wrong
+
+  ## Examples
+
+      iex> ExBase58.decode_check!("GZVwCXwyKVRPTViubJDVKVhVvcaKpEnqR", :monero)
+      <<170, 175, 89, 206, 129, 197, 74, 82, 170, 144, 47, 81, 120, 199, 251, 203, 167, 32, 54, 7>>
+
+      iex> ExBase58.decode_check!("GZVwCXwyKVRPTViubJDVKVhVvcaKpEnqR", :not_listed)
+      ** (ArgumentError) Invalid alphabet
+  """
+  @spec decode_check!(binary(), alphabet()) :: String.t()
+  def decode_check!(binary, alphabet \\ :bitcoin) do
+    str_alphabet = alphabet_to_string!(alphabet)
+    {:ok, value} = Impl.decode_check(binary, str_alphabet)
+    value
+  end
+
   defp alphabet_to_string(alphabet) when alphabet in [:bitcoin, :monero, :flickr, :ripple] do
     {:ok, Atom.to_string(alphabet)}
   end
@@ -163,4 +271,14 @@ defmodule ExBase58 do
   defp alphabet_to_string(_alphabet) do
     {:error, :invalid_alphabet}
   end
+
+  defp alphabet_to_string!(alphabet) do
+    case alphabet_to_string(alphabet) do
+      {:ok, value} ->
+        value
+
+      {:error, _} ->
+        raise ArgumentError, "Invalid alphabet"
+      end
+    end
 end
