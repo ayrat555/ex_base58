@@ -279,6 +279,6 @@ defmodule ExBase58 do
 
       {:error, _} ->
         raise ArgumentError, "Invalid alphabet"
-      end
     end
+  end
 end

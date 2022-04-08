@@ -6,7 +6,7 @@ defmodule ExBase58.MixProject do
   def project do
     [
       app: :ex_base58,
-      version: "0.3.0",
+      version: "0.3.1",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),

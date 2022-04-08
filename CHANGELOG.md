@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+* Add raising functions (https://github.com/ayrat555/ex_base58/pull/3)
+
 ## 0.3
 
 * Add `encode_check` and `encode_check_version` (https://github.com/ayrat555/ex_base58/pull/2)
