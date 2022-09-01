@@ -6,7 +6,7 @@ defmodule ExBase58.MixProject do
   def project do
     [
       app: :ex_base58,
-      version: "0.3.1",
+      version: "0.4.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -26,7 +26,7 @@ defmodule ExBase58.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:rustler, "~> 0.24"}
+      {:rustler, "~> 0.25"}
     ]
   end
 

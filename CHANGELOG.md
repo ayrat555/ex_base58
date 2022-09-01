@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+* Update rustler to 0.25
+
 ## 0.3.1
 
 * Add raising functions (https://github.com/ayrat555/ex_base58/pull/3)
