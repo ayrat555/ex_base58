@@ -1,8 +1,8 @@
 use bs58::alphabet::Alphabet;
-use rustler::types::binary::Binary;
-use rustler::types::binary::NewBinary;
+use rustler::Binary;
 use rustler::Encoder;
 use rustler::Env;
+use rustler::NewBinary;
 use rustler::Term;
 
 mod atoms {

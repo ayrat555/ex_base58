@@ -11,7 +11,7 @@ The package can be installed by adding `ex_base58` to your list of dependencies 
 ```elixir
 def deps do
   [
-    {:ex_base58, "~> 0.3"}
+    {:ex_base58, "~> 0.4"}
   ]
 end
 ```
