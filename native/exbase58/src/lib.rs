@@ -29,8 +29,8 @@ fn encode<'a>(env: Env<'a>, binary: Binary, alphabet: String) -> Term<'a> {
 fn encode_check_version<'a>(
     env: Env<'a>,
     binary: Binary,
-    alphabet: String,
     version: u8,
+    alphabet: String,
 ) -> Term<'a> {
     do_encode(
         env,
@@ -55,8 +55,8 @@ fn decode<'a>(env: Env<'a>, binary: String, alphabet: String) -> Term<'a> {
 fn decode_check_version<'a>(
     env: Env<'a>,
     binary: String,
-    alphabet: String,
     version: u8,
+    alphabet: String,
 ) -> Term<'a> {
     do_decode(
         env,

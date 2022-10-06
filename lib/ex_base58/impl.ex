@@ -7,11 +7,11 @@ defmodule ExBase58.Impl do
 
   def encode_check(_data, _alphabet), do: :erlang.nif_error(:nif_not_loaded)
 
-  def encode_check_version(_data, _alphabet, _version), do: :erlang.nif_error(:nif_not_loaded)
+  def encode_check_version(_data, _version, _alphabet), do: :erlang.nif_error(:nif_not_loaded)
 
   def decode(_data, _alphabet), do: :erlang.nif_error(:nif_not_loaded)
 
   def decode_check(_data, _alphabet), do: :erlang.nif_error(:nif_not_loaded)
 
-  def decode_check_version(_data, _alphabet, _version), do: :erlang.nif_error(:nif_not_loaded)
+  def decode_check_version(_data, _version, _alphabet), do: :erlang.nif_error(:nif_not_loaded)
 end

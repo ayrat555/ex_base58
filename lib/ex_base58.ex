@@ -77,7 +77,7 @@ defmodule ExBase58 do
           {:ok, binary()} | {:error, atom()}
   def encode_check_version(binary, version, alphabet \\ :bitcoin) do
     with {:ok, alphabet} <- alphabet_to_string(alphabet) do
-      Impl.encode_check_version(binary, alphabet, version)
+      Impl.encode_check_version(binary, version, alphabet)
     end
   end
 
@@ -95,7 +95,7 @@ defmodule ExBase58 do
   @spec encode_check_version!(binary(), non_neg_integer(), alphabet()) :: binary()
   def encode_check_version!(binary, version, alphabet \\ :bitcoin) do
     str_alphabet = alphabet_to_string!(alphabet)
-    {:ok, value} = Impl.encode_check_version(binary, str_alphabet, version)
+    {:ok, value} = Impl.encode_check_version(binary, version, str_alphabet)
     value
   end
 
@@ -205,7 +205,7 @@ defmodule ExBase58 do
   def decode_check_version(binary, version, alphabet \\ :bitcoin) do
     with {:ok, alphabet} <- alphabet_to_string(alphabet),
          {:ok, <<^version>> <> decoded} <-
-           Impl.decode_check_version(binary, alphabet, version) do
+           Impl.decode_check_version(binary, version, alphabet) do
       {:ok, decoded}
     end
   end
@@ -224,7 +224,7 @@ defmodule ExBase58 do
   @spec decode_check_version!(binary(), non_neg_integer(), alphabet()) :: binary()
   def decode_check_version!(binary, version, alphabet \\ :bitcoin) do
     str_alphabet = alphabet_to_string!(alphabet)
-    {:ok, <<^version>> <> decoded} = Impl.decode_check_version(binary, str_alphabet, version)
+    {:ok, <<^version>> <> decoded} = Impl.decode_check_version(binary, version, str_alphabet)
     decoded
   end
 
