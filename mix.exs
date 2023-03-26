@@ -8,7 +8,7 @@ defmodule ExBase58.MixProject do
     [
       app: :ex_base58,
       version: @version,
-      elixir: "~> 1.13",
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),

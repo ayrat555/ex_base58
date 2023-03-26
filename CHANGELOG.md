@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+* Use rustler precompiled (https://github.com/ayrat555/ex_base58/pull/7)
+
 ## 0.5.0
 
 * Update rustler to 0.26

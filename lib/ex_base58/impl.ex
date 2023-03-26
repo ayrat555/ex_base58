@@ -1,6 +1,8 @@
 defmodule ExBase58.Impl do
   @moduledoc false
 
+  version = Mix.Project.config()[:version]
+
   use RustlerPrecompiled,
     otp_app: :ex_base58,
     crate: :ex_base58,
