@@ -1,13 +1,14 @@
 defmodule ExBase58.MixProject do
   use Mix.Project
 
+  @version "0.6.0"
   @source_url "https://github.com/ayrat555/ex_base58"
 
   def project do
     [
       app: :ex_base58,
-      version: "0.5.0",
-      elixir: "~> 1.13",
+      version: @version,
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
@@ -26,7 +27,8 @@ defmodule ExBase58.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:rustler, "~> 0.26"}
+      {:rustler, ">= 0.0.0", optional: true},
+      {:rustler_precompiled, "~> 0.6"}
     ]
   end
 
@@ -52,7 +54,8 @@ defmodule ExBase58.MixProject do
         "native/exbase58/Cargo.lock",
         "mix.exs",
         "README.md",
-        "LICENSE"
+        "LICENSE",
+        "checksum-*.exs"
       ]
     ]
   end
