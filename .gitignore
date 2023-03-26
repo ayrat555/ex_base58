@@ -26,4 +26,4 @@ ex_base58-*.tar
 /tmp/
 
 /priv/native/*.so
-/native/exbase58/target/*
+/native/ex_base58/target/*
