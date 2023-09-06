@@ -45,7 +45,7 @@ jobs:
 
     - name: Build the project
       id: build-crate
-      uses: philss/rustler-precompiled-action@v1.0.0
+      uses: philss/rustler-precompiled-action@v1.0.1
       with:
         project-name: ex_base58
         project-version: ${{ env.PROJECT_VERSION }}
@@ -53,6 +53,7 @@ jobs:
         nif-version: ${{ matrix.nif }}
         use-cross: ${{ matrix.job.use-cross }}
         project-dir: "native/ex_base58"
+        cross-version: ${{ matrix.job.cross-version || 'v0.2.4' }}
 
     - name: Artifact upload
       uses: actions/upload-artifact@v3
