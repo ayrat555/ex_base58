@@ -1,7 +1,7 @@
 defmodule ExBase58.MixProject do
   use Mix.Project
 
-  @version "0.6.1"
+  @version "0.6.2"
   @source_url "https://github.com/ayrat555/ex_base58"
 
   def project do
@@ -28,7 +28,7 @@ defmodule ExBase58.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:rustler, ">= 0.0.0", optional: true},
-      {:rustler_precompiled, "~> 0.6"}
+      {:rustler_precompiled, "~> 0.7"}
     ]
   end
 
