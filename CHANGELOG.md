@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.2
+
+* Update rustler to 0.32 (https://github.com/ayrat555/ex_secp256k1/pull/24)
+
+## 0.6.1
+
+* Update bs58 and rustler crates (https://github.com/ayrat555/ex_base58/pull/8)
+
 ## 0.6.0
 
 * Use rustler precompiled (https://github.com/ayrat555/ex_base58/pull/7)
