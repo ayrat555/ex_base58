@@ -145,14 +145,4 @@ fn encode_result<'a>(env: Env<'a>, bytes: &[u8]) -> Term<'a> {
     (atoms::ok(), Binary::from(erl_bin)).encode(env)
 }
 
-rustler::init!(
-    "Elixir.ExBase58.Impl",
-    [
-        encode,
-        encode_check,
-        encode_check_version,
-        decode,
-        decode_check,
-        decode_check_version
-    ]
-);
+rustler::init!("Elixir.ExBase58.Impl");
