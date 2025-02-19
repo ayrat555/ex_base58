@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.6.3
+
+* Update ruslter to 0.36 (https://github.com/ayrat555/ex_base58/pull/10)
+
 ## 0.6.2
 
-* Update rustler to 0.32 (https://github.com/ayrat555/ex_secp256k1/pull/24)
+* Update rustler to 0.32 (https://github.com/ayrat555/ex_base58/pull/9)
 
 ## 0.6.1
 
