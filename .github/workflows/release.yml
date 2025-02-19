@@ -56,7 +56,7 @@ jobs:
         cross-version: ${{ matrix.job.cross-version || 'v0.2.4' }}
 
     - name: Artifact upload
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.build-crate.outputs.file-name }}
         path: ${{ steps.build-crate.outputs.file-path }}
