@@ -48,7 +48,7 @@ defmodule ExBase58.MixProject do
       },
       files: [
         "lib",
-        "native/ex_base58/.cargo.toml",
+        "native/ex_base58/.cargo/config.toml",
         "native/ex_base58/src",
         "native/ex_base58/Cargo.toml",
         "native/ex_base58/Cargo.lock",
