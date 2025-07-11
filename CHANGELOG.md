@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.4
+
+* Update rustler and workflows (https://github.com/ayrat555/ex_base58/pull/11)
+
 ## 0.6.3
 
 * Update ruslter to 0.36 (https://github.com/ayrat555/ex_base58/pull/10)
