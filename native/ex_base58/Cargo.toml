@@ -12,3 +12,7 @@ crate-type = ["cdylib"]
 [dependencies]
 rustler = "0.36"
 bs58 = { version = "0.5", features = ["check"] }
+
+[features]
+nif_version_2_15 = ["rustler/nif_version_2_15"]
+nif_version_2_16 = ["rustler/nif_version_2_16"]
