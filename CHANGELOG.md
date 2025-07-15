@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.5
+
+* Use ubuntu 22.04 runner to support older OSes (https://github.com/ayrat555/ex_base58/pull/13)
+
 ## 0.6.4
 
 * Update rustler and workflows (https://github.com/ayrat555/ex_base58/pull/11)
